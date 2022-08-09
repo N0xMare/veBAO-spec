@@ -1,0 +1,312 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Voting Escrow Contract - veBAO technical specification</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Bao Distribution Contract</a></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Bao Token Contract</a></li><li class="chapter-item expanded "><a href="chapter_4.html" class="active"><strong aria-hidden="true">4.</strong> Voting Escrow Contract</a></li><li class="chapter-item expanded "><a href="chapter_5.html"><strong aria-hidden="true">5.</strong> Base Burner Contract</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">veBAO technical specification</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="voting-escrow-contract"><a class="header" href="#voting-escrow-contract">Voting Escrow Contract</a></h1>
+<h2 id="important-notes"><a class="header" href="#important-notes">Important notes</a></h2>
+<ul>
+<li>
+<p>The Voting Escrow contract from the perspective of normal EOAs with new BAO tokens is the same as Curve's implementation. The process by which the DAO can vote to whitelist contracts (smart wallets) is the same as Curve's implementation as well if we do decide to create a market for bribes in veBAO later. </p>
+</li>
+<li>
+<p>The key difference is that there is added functionality to commit and add a distribution contract as a variable in the voting escrow contract to be used in functions handling logic for the distribution. There is a new internal function, distr_deposit(), to allow the distribution contract to create locks on behalf of the user with locked bao if they decide to interact with the vote escrow contract using lockDistribution() from the previous chapter found in the distribution contract. The new internal function distr_deposit() is only callable through the external function create_lock_for() usable only by the commited/applied address stored in the vote escrow contract as the distr_contract.</p>
+</li>
+<li>
+<p>Added functions to note: commit_distr_contract(), apply_distr_contract(), create_lock_for(), distr_deposit()</p>
+</li>
+<li>
+<p>functions to commit and apply the distr_contract variable, only admin can call</p>
+</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>    @external
+    def commit_distr_contract(addr: address):
+        &quot;&quot;&quot;
+        @notice Commit distribution contract
+        &quot;&quot;&quot;
+        assert msg.sender == self.admin
+        self.future_distr_contract = addr
+
+
+    @external
+    def apply_distr_contract():
+        &quot;&quot;&quot;
+        @notice Apply distribution contract
+        &quot;&quot;&quot;
+        assert msg.sender == self.admin
+        _distr: address = self.future_distr_contract
+        assert _distr != ZERO_ADDRESS   # distr contract not set
+        self.distr_contract = self.future_distr_contract
+<span class="boring">}
+</span></code></pre></pre>
+<ul>
+<li>External function called by distribution contract using lockDistribution() to create locks on behalf of addresses with a BAO distribution</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>    @external
+    @nonreentrant('lock')
+    def create_lock_for(_to: address, _value: uint256, _unlock_time: uint256):
+        &quot;&quot;&quot;
+        @notice Deposit `_value` tokens for `_to` address and lock until `_unlock_time`
+        @param _value Amount to deposit
+        @param _unlock_time Epoch time when tokens unlock, rounded down to whole weeks
+        &quot;&quot;&quot;
+        self.assert_distr_contract(msg.sender)
+        unlock_time: uint256 = (_unlock_time / WEEK) * WEEK  # Locktime is rounded down to weeks
+        _locked: LockedBalance = self.locked[_to]
+
+        assert _value &gt; 0  # dev: need non-zero value
+        assert _locked.amount == 0, &quot;Withdraw old tokens first&quot;
+        assert unlock_time &gt; block.timestamp, &quot;Can only lock until time in the future&quot;
+        assert unlock_time &lt;= block.timestamp + MAXTIME, &quot;Voting lock can be 4 years max&quot;
+
+        self.distr_deposit(_to, _value, unlock_time, _locked, CREATE_LOCK_FOR_TYPE)
+<span class="boring">}
+</span></code></pre></pre>
+<ul>
+<li>Internal function used by the external function create_lock_for() to assign locks from msg.sender to another address, only callable through create_lock_for() so it requires that only distr_contract(address) can use this part of the contract. The transferFrom() call is modified with the distr.contract address instead of &quot;_addr&quot;/user's address found in _deposit_for() in order to allow for lock creation by another address set by the admin address as _addr in this scenario wont have any bao tokens (the distribution contract has them on behalf of the user).</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>    @internal
+    def distr_deposit(_addr: address, _value: uint256, unlock_time: uint256, locked_balance: LockedBalance, type: int128):
+        &quot;&quot;&quot;
+        @notice Deposit and lock tokens for a user
+        @param _addr User's wallet address
+        @param _value Amount to deposit
+        @param unlock_time New time when to unlock the tokens, or 0 if unchanged
+        @param locked_balance Previous locked amount / timestamp
+        &quot;&quot;&quot;
+        _locked: LockedBalance = locked_balance
+        supply_before: uint256 = self.supply
+
+        self.supply = supply_before + _value
+        old_locked: LockedBalance = _locked
+<span class="boring">        Adding to existing lock, or if a lock is expired - creating a new one
+</span>        _locked.amount += convert(_value, int128)
+        if unlock_time != 0:
+            _locked.end = unlock_time
+        self.locked[_addr] = _locked
+
+<span class="boring">        Possibilities:
+</span><span class="boring">        Both old_locked.end could be current or expired (&gt;/&lt; block.timestamp)
+</span><span class="boring">        value == 0 (extend lock) or value &gt; 0 (add to lock or extend lock)
+</span><span class="boring">        _locked.end &gt; block.timestamp (always)
+</span>        self._checkpoint(_addr, old_locked, _locked)
+
+        if _value != 0:
+            assert ERC20(self.token).transferFrom(self.distr_contract, self, _value)
+
+        log Deposit(_addr, _value, _locked.end, type, block.timestamp)
+        log Supply(supply_before, supply_before + _value)
+<span class="boring">}
+</span></code></pre></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="chapter_3.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="chapter_5.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="chapter_3.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="chapter_5.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

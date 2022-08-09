@@ -1,0 +1,6 @@
+[book]
+authors = ["nox"]
+language = "en"
+multilingual = false
+src = "src"
+title = "veBAO technical specification"
