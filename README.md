@@ -11,3 +11,4 @@
 ```bash
   mdbook serve --open
   ```
+or just look at markdown files here in src/ directory
